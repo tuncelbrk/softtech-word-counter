@@ -2,7 +2,11 @@ package com.softtech.codetest.wordcount;
 
 public interface Sentences {
 
-    int size();
+    int sentenceNumber();
 
     String getSentence(int sentenceNumber);
+
+    int averageWordNumber();
+
+    int totalWordNumber();
 }

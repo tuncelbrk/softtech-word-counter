@@ -25,23 +25,13 @@ public class SubmissionTest {
     }
 
     @Test
-    public void testSubmission() throws Exception {
-        System.out.println(readSentences);
-//        ExecutorService es = Executors.newFixedThreadPool( 4 );
-//        for(int i = 0; i< 4; i++){
-//            es.execute( new WordCountImp(service, readSentences.getSentence(i)) );
-//        }
-//        es.shutdown();
-//        es.awaitTermination( 1, TimeUnit.MINUTES );
-//        System.out.println(readSentences.averageWordNumber()+"--"+readSentences.sentenceNumber());
-//        service.printWordAndCounts();
+    public void testProperSubmission() throws Exception {
+        System.out.println("Total number of sentences : "+ readSentences.sentenceNumber());
+        System.out.println("Total number of the words : "+ readSentences.totalWordNumber());
+        System.out.println("Average number of the words for each sentence : "+ readSentences.averageWordNumber());
+
         new Starter(service, readSentences,4);
         service.printWordAndCounts();
-        System.out.println(readSentences.totalWordNumber());
-//        service.findWords(0);
-//        service.findWords(1);
-//        service.findWords(2);
-//        service.findWords(3);
 
     }
 }

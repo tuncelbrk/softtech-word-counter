@@ -10,10 +10,6 @@ public class Starter {
         this.threadNumber = threadNumber;
         ExecutorService es = Executors.newFixedThreadPool( threadNumber );
 
-//        for(int i = 0; i< threadNumber; i++){
-//            es.execute( new WordCountImp(service, readSentences.getSentence(i)) );
-//        }
-
         for(int i = 0; i< readSentences.sentenceNumber(); i++){
             es.execute(new WordCountImp(service, readSentences.getSentence(i)));
         }
@@ -23,8 +19,8 @@ public class Starter {
 
     public Starter(CountWords service, Sentences readSentences) throws InterruptedException {
         ExecutorService es = Executors.newFixedThreadPool( threadNumber );
-        for(int i = 0; i< threadNumber; i++){
-            es.execute( new WordCountImp(service, readSentences.getSentence(i)) );
+        for(int i = 0; i< readSentences.sentenceNumber(); i++){
+            es.execute(new WordCountImp(service, readSentences.getSentence(i)));
         }
         es.shutdown();
         es.awaitTermination( 1, TimeUnit.MINUTES );

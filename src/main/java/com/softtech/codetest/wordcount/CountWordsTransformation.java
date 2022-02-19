@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CountWordsTransformation implements CountWords {
     Map<String, Integer> counterMap = new ConcurrentHashMap<>();
+
     int counter=0;
     public synchronized void increaseOrSubmitWord(Map<String, Integer> counterMap, String word ) {
         if (counterMap.containsKey(word)){

@@ -1,17 +1,28 @@
 package com.softtech.codetest.wordcount;
 
 public class WordCountImp implements Runnable {
-    CountWords service;
-    String sentence;
+    private CountWords service;
+    private static Sentences readSentences;
+    private boolean exit = false;
 
-    public WordCountImp(CountWords service, String sentence) {
+    WordCountImp(CountWords service, Sentences readSentences) {
         this.service = service;
-        this.sentence = sentence;
+        this.readSentences = readSentences;
     }
 
     @Override
     public void run() {
-        System.out.println(Thread.currentThread().getName());
-        service.findWords(sentence);
+        while (!exit){
+            String sentence  = readSentences.getSentence(0);
+            if(!sentence.equals("")){
+                service.findWords(sentence);
+            }else{
+                stop();
+            }
+        }
+    }
+
+    private void stop() {
+        exit = true;
     }
 }

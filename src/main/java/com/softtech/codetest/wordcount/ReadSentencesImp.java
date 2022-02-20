@@ -6,14 +6,14 @@ import java.util.regex.Pattern;
 
 public class ReadSentencesImp implements Sentences {
 
-    Vector<String> v = new Vector<>();
-    public int totalWordNumber;
+    private Vector<String> v = new Vector<>();
+    private int totalWordNumber;
 
      ReadSentencesImp() {
         try {
             Scanner scanner = new Scanner(this.getClass().getResourceAsStream("/paragraph.txt"),
                     "utf-8");
-            scanner.useDelimiter(Pattern.compile("[.?!]"));
+            scanner.useDelimiter(Pattern.compile("[.?!]+ "));
 
             while(scanner.hasNext()) {
                 String sentence = scanner.next();
@@ -32,8 +32,13 @@ public class ReadSentencesImp implements Sentences {
     }
 
     @Override
-    public String getSentence(int sentenceNumber) {
-        return v.get(sentenceNumber);
+    public synchronized String getSentence(int sentenceNumber) {
+        if(v.size()!=0){
+            String returnValue = v.get(sentenceNumber);
+            v.remove(sentenceNumber);
+            return returnValue;
+        }
+        return "";
     }
 
     @Override

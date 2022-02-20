@@ -1,28 +1,43 @@
 package com.softtech.codetest.wordcount;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+class Starter {
+    private int threadNumber = 5; //default thread number is 5
+    private Sentences readSentences;
+    private CountWords service;
 
-public class Starter {
-    int threadNumber = 5;
-    public Starter(CountWords service, Sentences readSentences, int threadNumber) throws InterruptedException {
+    Starter(CountWords service, Sentences readSentences, int threadNumber) {
+        this.readSentences = readSentences;
         this.threadNumber = threadNumber;
-        ExecutorService es = Executors.newFixedThreadPool( threadNumber );
+        this.service = service;
 
-        for(int i = 0; i< readSentences.sentenceNumber(); i++){
-            es.execute(new WordCountImp(service, readSentences.getSentence(i)));
+        Thread[] threads = new Thread [threadNumber];
+        for(int i =0; i < threadNumber; i++) {
+            threads[i] = new Thread(new WordCountImp(service, readSentences));
+            service.initializeThreadMap(threads[i]);
+            threads[i].start();
         }
-        es.shutdown();
-        es.awaitTermination( 1, TimeUnit.MINUTES );
+
+        while (readSentences.sentenceNumber()>0){
+            for(int i =0; i < threadNumber; i++) {
+                threads[i].run();
+            }
+        }
     }
 
-    public Starter(CountWords service, Sentences readSentences) throws InterruptedException {
-        ExecutorService es = Executors.newFixedThreadPool( threadNumber );
-        for(int i = 0; i< readSentences.sentenceNumber(); i++){
-            es.execute(new WordCountImp(service, readSentences.getSentence(i)));
+    Starter(CountWords service, Sentences readSentences) {
+        this.service = service;
+        this.readSentences = readSentences;
+        Thread[] threads = new Thread [threadNumber];
+        for(int i =0; i < threadNumber; i++) {
+            threads[i] = new Thread(new WordCountImp(service, readSentences));
+            service.initializeThreadMap(threads[i]);
+            threads[i].start();
         }
-        es.shutdown();
-        es.awaitTermination( 1, TimeUnit.MINUTES );
+
+        while (readSentences.sentenceNumber()>0){
+            for(int i =0; i < threadNumber; i++) {
+                threads[i].run();
+            }
+        }
     }
 }
